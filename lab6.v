@@ -1,6 +1,6 @@
 `define TimeExpire 32'd25000000
 
-module lab7(clock, reset, in, out);
+module lab6(clock, reset, in, out);
     input clock, reset, in;
     output [6:0]out;
     
@@ -8,8 +8,8 @@ module lab7(clock, reset, in, out);
     wire[3:0]state;
     
     frequency_dividder fd1(clock, reset, clk_div);
-    Moore_Machine M1(clk_div, reset, in, state);
-    display7 d1(reset, clk_div, state, in, out); 
+    State M1(clk_div, reset, in, state);
+    display7 d1(reset, clk_div, state, in, out);
 endmodule
 
 module frequency_dividder(clk, rst, clk_div);
@@ -40,7 +40,7 @@ module frequency_dividder(clk, rst, clk_div);
     end
 endmodule
 
-module Moore_Machine(clk_div, rst, in, state);
+module State(clk_div, rst, in, state);
    input rst, clk_div, in;
    output reg [3:0] state; 
 
@@ -52,55 +52,10 @@ module Moore_Machine(clk_div, rst, in, state);
         end
         else
         begin
-            case(state)
-                3'd0: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd1;
-                    else
-                        state <= 3'd3;
-                end
-                3'd1: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd2;
-                    else
-                        state <= 3'd5;
-                end
-                3'd2: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd3;
-                    else
-                        state <= 3'd0;
-                end
-                3'd3: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd4;
-                    else
-                        state <= 3'd1;
-                end
-                3'd4: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd5;
-                    else
-                        state <= 3'd2;
-                end
-                3'd1: 
-                begin
-                    if(in == 1'b0)
-                        state <= 3'd0;
-                    else
-                        state <= 3'd4;
-                end
-                default:
-                begin
-                    state <= 3'd0;
-                end
-            endcase
-            
+            if(state == 4'd15)
+                state <= 4'b0;
+            else
+                state <= state + 4'd1;
         end
     end
 endmodule
@@ -120,43 +75,43 @@ module display7(rst, clk_div, state, in, out);
         else
         begin
             case(state)
-                4'd0:   //0 
+                4'd0: 
                 begin
                     out <= 7'b1000000;
                 end
-                4'd1:   //1
+                4'd1:
                 begin
                     out <= 7'b1111001;
                 end
-                4'd2:   //2
+                4'd2:
                 begin
                     out <= 7'b0100100;
                 end
-                4'd3:   //3
+                4'd3:
                 begin
                     out <= 7'b0110000;
                 end
-                4'd4:   //4
+                4'd4:
                 begin
                     out <= 7'b0011001;
                 end
-                4'd5:   //5
+                4'd5:
                 begin
                     out <= 7'b0010010;
                 end
-                4'd6:   //6
+                4'd6:
                 begin
                     out <= 7'b0000010;
                 end
-                4'd7:   //7
+                4'd7:
                 begin
                     out <= 7'b1111000;
                 end
-                4'd8:   //8
+                4'd8:
                 begin
                     out <= 7'b0000000;
                 end
-                4'd9:   //9
+                4'd9:
                 begin
                     out <= 7'b0010000;
                 end
